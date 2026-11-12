@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pet Rock 3000</title>
+<style>
+  :root {
+    --bg: #1a1423;
+    --panel: #241b30;
+    --accent: #c9a0ff;
+    --accent2: #7de8c3;
+    --text: #efe9f7;
+    --dim: #9b8fae;
+    --danger: #ff7b8a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: radial-gradient(ellipse at 50% 0%, #2b1f3d 0%, var(--bg) 60%);
+    color: var(--text);
+    font-family: "Courier New", Courier, monospace;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px;
+  }
+  h1 {
+    font-size: 1.6rem;
+    letter-spacing: 4px;
+    color: var(--accent);
+    text-shadow: 0 0 12px rgba(201,160,255,.5);
+    margin-bottom: 4px;
+  }
+  .subtitle { color: var(--dim); font-size: .8rem; margin-bottom: 20px; }
+  .stage {
+    background: var(--panel);
+    border: 2px solid #3a2c4e;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 560px;
+    padding: 24px;
+    box-shadow: 0 0 40px rgba(0,0,0,.5);
+  }
+  .rock-view {
+    text-align: center;
+    font-size: 3.2rem;
+    min-height: 130px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    cursor: pointer;
+    transition: transform .1s;
+    line-height: 1.1;
+    white-space: pre;
+  }
+  .rock-view:active { transform: scale(.95); }
+  .rock-name {
+    text-align: center;
+    color: var(--accent2);
+    font-size: 1.1rem;
+    margin-bottom: 2px;
+  }
+  .rock-mood {
+    text-align: center;
+    color: var(--dim);
+    font-size: .8rem;
+    font-style: italic;
+    margin-bottom: 16px;
+    min-height: 1.2em;
+  }
+  .stats { display: flex; flex-direction: column; gap: 10px; margin-bottom: 18px; }
+  .stat { display: flex; align-items: center; gap: 10px; font-size: .8rem; }
+  .stat-label { width: 110px; color: var(--dim); }
+  .bar-track {
+    flex: 1; height: 14px; background: #171021;
+    border: 1px solid #3a2c4e; border-radius: 8px; overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%; border-radius: 8px;
+    transition: width .4s ease, background .4s ease;
+  }
+  .bar-fill.happy { background: linear-gradient(90deg, #7de8c3, #c9a0ff); }
+  .bar-fill.shine { background: linear-gradient(90deg, #ffd97d, #ff9d6c); }
+  .bar-fill.weird { background: linear-gradient(90deg, #ff7b8a, #c9a0ff); }
+  .stat-value { width: 34px; text-align: right; }
+  .actions { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  button {
+    background: #31244a;
+    color: var(--text);
+    border: 1px solid #4d3a6b;
+    border-radius: 10px;
+    padding: 12px 8px;
+    font-family: inherit;
+    font-size: .85rem;
+    cursor: pointer;
+    transition: background .15s, transform .1s;
+  }
+  button:hover { background: #3d2d5c; }
+  button:active { transform: scale(.96); }
+  button.danger { border-color: #6b3a46; }
+  button.danger:hover { background: #4a2a35; }
+  .log {
+    margin-top: 18px;
+    background: #171021;
+    border: 1px solid #3a2c4e;
+    border-radius: 10px;
+    padding: 12px;
+    height: 140px;
+    overflow-y: auto;
+    font-size: .78rem;
+    line-height: 1.6;
+  }
+  .log div { color: var(--dim); }
+  .log .fresh { color: var(--accent2); }
+  .log .bad { color: var(--danger); }
+  .footer {
+    margin-top: 14px;
+    color: var(--dim);
+    font-size: .7rem;
+    text-align: center;
+  }
+  .event-flash {
+    position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+    background: var(--accent); color: #1a1423;
+    padding: 10px 22px; border-radius: 999px;
+    font-weight: bold; font-size: .85rem;
+    opacity: 0; pointer-events: none;
+    transition: opacity .3s;
+    z-index: 10;
+    max-width: 90vw; text-align: center;
+  }
+  .event-flash.show { opacity: 1; }
+  @media (max-width: 420px) {
+    .rock-view { font-size: 2.4rem; }
+    .stat-label { width: 84px; }
+  }
+</style>
+</head>
+<body>
+  <h1>PET ROCK 3000</h1>
+  <div class="subtitle">the future of companionship, minus the movement</div>
+
+  <div class="stage">
+    <div class="rock-name" id="rockName">...</div>
+    <div class="rock-mood" id="rockMood"></div>
+    <div class="rock-view" id="rockView" title="click to pet"></div>
+
+    <div class="stats">
+      <div class="stat">
+        <span class="stat-label">Happiness</span>
+        <div class="bar-track"><div class="bar-fill happy" id="barHappy"></div></div>
+        <span class="stat-value" id="valHappy">0</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Shine</span>
+        <div class="bar-track"><div class="bar-fill shine" id="barShine"></div></div>
+        <span class="stat-value" id="valShine">0</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Weirdness</span>
+        <div class="bar-track"><div class="bar-fill weird" id="barWeird"></div></div>
+        <span class="stat-value" id="valWeird">0</span>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button id="btnPet">🤚 Pet the rock</button>
+      <button id="btnPolish">✨ Polish</button>
+      <button id="btnSecret">🤫 Tell a secret</button>
+      <button id="btnThrow" class="danger">🫸 Throw (risky)</button>
+    </div>
+
+    <div class="log" id="log"></div>
+  </div>
+
+  <div class="footer">Your rock is saved in this browser. It remembers everything.</div>
+  <div class="event-flash" id="flash"></div>
+
+<script>
+(function () {
+  "use strict";
+
+  var STORAGE_KEY = "pet-rock-3000-v1";
+
+  var NAMES = ["Dwayne", "Gneiss Guy", "Boulder Bob", "Pebbles", "Sir Rocksalot",
+               "Chonky Mineral", "Greg", "The Sedimenter", "Rocky Ravatelli", "Lil Basalt"];
+  var MOODS = [
+    { min: 80, face: "( ͡° ͜ʖ ͡°)", text: "suspiciously pleased" },
+    { min: 60, face: "(•‿•)", text: "geologically content" },
+    { min: 40, face: "( •_•)", text: "stoic, as always" },
+    { min: 20, face: "(╥﹏╥)", text: "feeling eroded" },
+    { min: 0,  face: "(✖﹏✖)", text: "existentially gravel" }
+  ];
+  var WEIRD_FACES = ["(⊙_⊙)", "(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧", "(⌐■_■)", "(ง'̀-'́)ง", "༼ つ ◕_◕ ༽つ", "(☞ﾟヮﾟ)☞"];
+  var SECRETS = [
+    "The rock nods slowly. It will take this to the grave.",
+    "The rock already knew. Rocks know everything.",
+    "The rock whispers back. You decide not to hear it.",
+    "The rock judged you silently, then forgave you.",
+    "The rock files this under 'classic human behavior'."
+  ];
+  var PET_LINES = [
+    "The rock vibrates at a frequency only you can feel.",
+    "The rock pretends not to enjoy that. It enjoyed that.",
+    "Warmth detected. Rock denies everything.",
+    "The rock leans into it. Metaphorically. It cannot lean."
+  ];
+  var POLISH_LINES = [
+    "The rock gleams arrogantly.",
+    "A passing geologist weeps with joy.",
+    "The rock is now visible from space.",
+    "Mirror-like. The rock sees you. The rock remembers."
+  ];
+  var EVENTS = [
+    { text: "A pigeon attempted to befriend your rock.", effect: { happy: +5 } },
+    { text: "Your rock dreamt of being a mountain.", effect: { weird: +8 } },
+    { text: "The rock absorbed ambient gossip.", effect: { weird: +5, happy: +3 } },
+    { text: "A tiny moss started growing on the rock. It has a name now.", effect: { happy: +7 } },
+    { text: "The rock briefly achieved enlightenment, then forgot why.", effect: { weird: +10 } },
+    { text: "Dust settled on the rock. It feels neglected.", effect: { shine: -8, happy: -4 } },
+    { text: "The rock heard a rumor about gravel.", effect: { weird: +4 } },
+    { text: "Moonlight charged the rock with unknown minerals.", effect: { shine: +6, weird: +3 } },
+    { text: "The rock practiced its impression of a potato. Nailed it.", effect: { happy: +6, weird: +5 } }
+  ];
+
+  var state = load();
+  var $ = function (id) { return document.getElementById(id); };
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) return JSON.parse(raw);
+    } catch (e) {}
+    return {
+      name: NAMES[Math.floor(Math.random() * NAMES.length)],
+      happy: 50, shine: 50, weird: 10,
+      pets: 0, throws: 0, born: Date.now()
+    };
+  }
+
+  function save() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function clamp(v) { return Math.max(0, Math.min(100, v)); }
+
+  function log(msg, cls) {
+    var logEl = $("log");
+    var div = document.createElement("div");
+    if (cls) div.className = cls;
+    div.textContent = "› " + msg;
+    logEl.prepend(div);
+    while (logEl.children.length > 40) logEl.removeChild(logEl.lastChild);
+  }
+
+  function flash(msg) {
+    var f = $("flash");
+    f.textContent = msg;
+    f.classList.add("show");
+    setTimeout(function () { f.classList.remove("show"); }, 2200);
+  }
+
+  function render() {
+    var mood = MOODS[0];
+    for (var i = 0; i < MOODS.length; i++) {
+      if (state.happy >= MOODS[i].min) { mood = MOODS[i]; break; }
+    }
+    var face = state.weird > 70 ? WEIRD_FACES[Math.floor(Math.random() * WEIRD_FACES.length)] : mood.face;
+    $("rockView").textContent = "        _______\n     .-'       '-.\n    /             \\\n   |               |\n   |     " + face + "     |\n   |               |\n    \\             /\n     '-._______.-'";
+    $("rockName").textContent = state.name + (state.throws > 3 ? " (survivor)" : "");
+    $("rockMood").textContent = "is " + mood.text;
+    $("barHappy").style.width = state.happy + "%";
+    $("barShine").style.width = state.shine + "%";
+    $("barWeird").style.width = state.weird + "%";
+    $("valHappy").textContent = Math.round(state.happy);
+    $("valShine").textContent = Math.round(state.shine);
+    $("valWeird").textContent = Math.round(state.weird);
+  }
+
+  function bump(field, amount) {
+    state[field] = clamp(state[field] + amount);
+  }
+
+  function pet() {
+    state.pets++;
+    bump("happy", 6);
+    bump("shine", 1);
+    if (state.pets % 7 === 0) {
+      bump("weird", 5);
+      log("The rock has been pet " + state.pets + " times. It is starting to expect it.", "bad");
+    } else {
+      log(PET_LINES[Math.floor(Math.random() * PET_LINES.length)], "fresh");
+    }
+    render(); save();
+  }
+
+  function polish() {
+    bump("shine", 12);
+    bump("happy", 2);
+    log(POLISH_LINES[Math.floor(Math.random() * POLISH_LINES.length)], "fresh");
+    render(); save();
+  }
+
+  function secret() {
+    bump("happy", 4);
+    bump("weird", 3);
+    log(SECRETS[Math.floor(Math.random() * SECRETS.length)], "fresh");
+    if (Math.random() < 0.1) {
+      state.name = NAMES[Math.floor(Math.random() * NAMES.length)];
+      log("The secret moved the rock so deeply it changed its name to " + state.name + ".", "bad");
+    }
+    render(); save();
+  }
+
+  function throwRock() {
+    state.throws++;
+    if (Math.random() < 0.35) {
+      bump("happy", -15);
+      bump("shine", -10);
+      log("You threw the rock. It landed in a bush. It is processing this.", "bad");
+      flash("💥 " + state.name + " did not appreciate that");
+    } else {
+      bump("weird", 12);
+      bump("happy", 3);
+      log("You threw the rock. It came back. Nobody threw it back. Discuss.", "fresh");
+      flash("🌀 the rock returned on its own");
+    }
+    render(); save();
+  }
+
+  function randomEvent() {
+    var e = EVENTS[Math.floor(Math.random() * EVENTS.length)];
+    var keys = Object.keys(e.effect);
+    for (var i = 0; i < keys.length; i++) bump(keys[i], e.effect[keys[i]]);
+    log(e.text);
+    if (state.weird >= 100) {
+      state.weird = 50;
+      state.name = NAMES[Math.floor(Math.random() * NAMES.length)];
+      flash("⚠️ MAXIMUM WEIRDNESS — the rock ascended and respawned as " + state.name);
+      log("Maximum weirdness reached. The rock ascended to a higher plane, got bored, and came back with a new name.", "bad");
+    }
+    render(); save();
+  }
+
+  $("rockView").addEventListener("click", pet);
+  $("btnPet").addEventListener("click", pet);
+  $("btnPolish").addEventListener("click", polish);
+  $("btnSecret").addEventListener("click", secret);
+  $("btnThrow").addEventListener("click", throwRock);
+
+  log("Welcome. " + state.name + " has been waiting. Rocks are patient.");
+  render();
+
+  setInterval(function () {
+    bump("happy", -1);
+    bump("shine", -0.5);
+    if (Math.random() < 0.4) randomEvent();
+    render(); save();
+  }, 20000);
+})();
+</script>
+</body>
+</html>
