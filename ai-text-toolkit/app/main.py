@@ -15,7 +15,7 @@ async def lifespan(_: FastAPI):
     yield
 
 
-app = FastAPI(title="Wrytex", lifespan=lifespan)
+app = FastAPI(title="Textuvia", lifespan=lifespan)
 
 app.include_router(router)
 app.mount("/static", StaticFiles(directory=Path(__file__).resolve().parent.parent / "static"), name="static")
