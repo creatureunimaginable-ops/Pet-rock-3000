@@ -12,7 +12,7 @@ if [ ! -d .venv ]; then
 fi
 echo ""
 echo "============================================"
-echo "  AI Text Toolkit starting..."
+echo "  Textuvia starting..."
 echo "  Open http://127.0.0.1:8000 in your browser"
 echo "  Press Ctrl+C to stop the app."
 echo "============================================"
