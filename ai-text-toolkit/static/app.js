@@ -6,10 +6,10 @@ const state = {
 };
 
 function getClientId() {
-  let id = localStorage.getItem("att_client_id");
+  let id = localStorage.getItem("textuvia_client_id");
   if (!id) {
     id = crypto.randomUUID();
-    localStorage.setItem("att_client_id", id);
+    localStorage.setItem("textuvia_client_id", id);
   }
   return id;
 }
