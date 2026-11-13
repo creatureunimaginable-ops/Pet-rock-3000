@@ -14,7 +14,7 @@ if not exist .venv (
 )
 echo.
 echo ============================================
-echo   AI Text Toolkit starting...
+echo   Textuvia starting...
 echo   Your browser will open automatically.
 echo   Keep this window open while using the app.
 echo   Close this window to stop the app.
