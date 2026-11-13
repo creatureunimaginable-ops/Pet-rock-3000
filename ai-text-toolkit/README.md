@@ -1,6 +1,6 @@
-# AI Text Toolkit
+# Textuvia
 
-A free-tier-friendly web app for AI text tools: **Summarize**, **Rewrite** (4 tones), and **Captions** (Instagram / Twitter / LinkedIn). Built with FastAPI + vanilla JS, SQLite storage, and a daily free-credit system for the freemium model.
+**Textuvia** — AI writing help in one tap. A free-tier-friendly web app for AI text tools: **Summarize**, **Rewrite** (4 tones), and **Captions** (Instagram / Twitter / LinkedIn). Built with FastAPI + vanilla JS, SQLite storage, and a daily free-credit system for the freemium model.
 
 ## Features
 
@@ -10,41 +10,25 @@ A free-tier-friendly web app for AI text tools: **Summarize**, **Rewrite** (4 to
 - Pluggable AI providers: **Mistral**, **OpenAI**, or **mock/demo mode** (no key needed)
 - Single-page UI, no build step
 
-## Quick start (one click)
+## Quick start
 
-**Windows:** double-click `start.bat`
-
-**Mac / Linux:**
 ```bash
-bash start.sh
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+python run.py
 ```
 
-The script installs everything on first run, starts the app, and opens your browser at http://127.0.0.1:8000. The app starts in **demo mode** so you can try everything without an API key.
-
-> Requires Python 3.10+ ([python.org](https://www.python.org/downloads/) — on Windows, check "Add Python to PATH" during install).
-
-## Put it online (free — use it from your phone)
-
-The repo includes a `Dockerfile` and a Render blueprint (`render.yaml`), so it deploys in a few taps:
-
-1. Merge this pull request (or deploy straight from this branch)
-2. Go to [dashboard.render.com](https://dashboard.render.com) → **New** → **Blueprint**
-3. Connect your GitHub account and pick this repository
-4. Click **Apply** — Render builds and gives you a public `https://your-app.onrender.com` URL
-
-Notes:
-- Free tier: the app sleeps after 15 min idle and wakes on the first request (~30s)
-- SQLite storage resets on redeploy; add a Render disk or Postgres for persistence
-- To enable real AI: add `AI_PROVIDER` / `AI_API_KEY` environment variables in the Render dashboard
+Open http://127.0.0.1:8000 — Textuvia starts in **demo mode** so you can try everything without an API key.
 
 ## Enable a real AI provider
 
-Set your provider and key, then start the app:
+Copy `.env.example` to `.env`, set your provider and key, then export before running:
 
 ```bash
 export AI_PROVIDER=mistral
 export AI_API_KEY=your-key-here
-bash start.sh
+python run.py
 ```
 
 - Mistral free key: https://console.mistral.ai
