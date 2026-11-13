@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Text Toolkit</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>✨ AI Text Toolkit</h1>
+      <p class="subtitle">Summarize, rewrite, and caption — free credits every day.</p>
+      <div id="mode-badge" class="badge hidden"></div>
+    </header>
+
+    <nav id="tool-tabs" class="tabs"></nav>
+
+    <main class="card">
+      <section class="pane">
+        <label for="input-text">Your text</label>
+        <textarea id="input-text" placeholder="Paste or type your text here..." maxlength="8000"></textarea>
+        <div class="char-count"><span id="char-count">0</span> / 8000</div>
+        <div id="options" class="options"></div>
+        <button id="run-btn" class="primary">Generate</button>
+        <div id="error" class="error hidden"></div>
+      </section>
+
+      <section class="pane">
+        <div class="output-head">
+          <label>Result</label>
+          <button id="copy-btn" class="ghost hidden">Copy</button>
+        </div>
+        <div id="output" class="output empty">Your result will appear here.</div>
+      </section>
+    </main>
+
+    <aside class="card">
+      <div class="credits-row">
+        <span>Credits left today: <strong id="credits">–</strong></span>
+        <button id="refresh-history" class="ghost small">Refresh history</button>
+      </div>
+      <ul id="history" class="history"></ul>
+    </aside>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
