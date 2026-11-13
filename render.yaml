@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: ai-text-toolkit
+    runtime: docker
+    dockerfilePath: ./ai-text-toolkit/Dockerfile
+    dockerContext: ./ai-text-toolkit
+    plan: free
+    envVars:
+      - key: AI_PROVIDER
+        value: mock
+      - key: FREE_DAILY_CREDITS
+        value: "5"
