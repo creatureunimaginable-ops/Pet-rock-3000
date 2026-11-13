@@ -1,11 +1,11 @@
 :root {
-  --bg: #0f1117;
-  --card: #181b23;
-  --border: #2a2f3d;
-  --text: #e8eaf0;
-  --muted: #9aa1b2;
-  --accent: #6c5ce7;
-  --accent-hover: #7d6ef0;
+  --bg: #141210;
+  --card: #1e1a15;
+  --border: #352c21;
+  --text: #f3ede4;
+  --muted: #a89f92;
+  --accent: #f97316;
+  --accent-hover: #fb8b3c;
   --danger: #ff6b6b;
 }
 
@@ -32,9 +32,8 @@ header { text-align: center; margin-bottom: 24px; }
   height: 84px;
   border-radius: 20px;
   margin-bottom: 12px;
-  box-shadow: 0 0 24px rgba(108, 92, 231, 0.45);
+  box-shadow: 0 0 26px rgba(249, 115, 22, 0.45);
 }
-
 h1 { margin: 0 0 6px; font-size: 1.9rem; }
 .subtitle { margin: 0; color: var(--muted); }
 
@@ -44,9 +43,9 @@ h1 { margin: 0 0 6px; font-size: 1.9rem; }
   padding: 4px 12px;
   border-radius: 999px;
   font-size: 0.78rem;
-  background: rgba(108, 92, 231, 0.18);
+  background: rgba(249, 115, 22, 0.15);
   border: 1px solid var(--accent);
-  color: #cfc9ff;
+  color: #ffd9b8;
 }
 .hidden { display: none !important; }
 
@@ -70,7 +69,8 @@ h1 { margin: 0 0 6px; font-size: 1.9rem; }
 .tabs button.active {
   background: var(--accent);
   border-color: var(--accent);
-  color: #fff;
+  color: #1c130a;
+  font-weight: 600;
 }
 
 .card {
@@ -127,9 +127,9 @@ button.primary {
   border: none;
   border-radius: 10px;
   background: var(--accent);
-  color: #fff;
+  color: #1c130a;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: background 0.15s;
 }
@@ -145,7 +145,7 @@ button.ghost {
   cursor: pointer;
   font-size: 0.85rem;
 }
-button.ghost:hover { color: var(--text); border-color: var(--muted); }
+button.ghost:hover { color: var(--text); border-color: var(--accent); }
 button.ghost.small { padding: 4px 10px; font-size: 0.78rem; }
 
 .error {
