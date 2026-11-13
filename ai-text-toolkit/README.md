@@ -10,25 +10,27 @@ A free-tier-friendly web app for AI text tools: **Summarize**, **Rewrite** (4 to
 - Pluggable AI providers: **Mistral**, **OpenAI**, or **mock/demo mode** (no key needed)
 - Single-page UI, no build step
 
-## Quick start
+## Quick start (one click)
 
+**Windows:** double-click `start.bat`
+
+**Mac / Linux:**
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-python run.py
+bash start.sh
 ```
 
-Open http://127.0.0.1:8000 — the app starts in **demo mode** so you can try everything without an API key.
+The script installs everything on first run, starts the app, and opens your browser at http://127.0.0.1:8000. The app starts in **demo mode** so you can try everything without an API key.
+
+> Requires Python 3.10+ ([python.org](https://www.python.org/downloads/) — on Windows, check "Add Python to PATH" during install).
 
 ## Enable a real AI provider
 
-Copy `.env.example` to `.env`, set your provider and key, then export before running:
+Set your provider and key, then start the app:
 
 ```bash
 export AI_PROVIDER=mistral
 export AI_API_KEY=your-key-here
-python run.py
+bash start.sh
 ```
 
 - Mistral free key: https://console.mistral.ai
