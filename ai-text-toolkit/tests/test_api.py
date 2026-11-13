@@ -68,4 +68,4 @@ def test_history(client):
 def test_index_served(client):
     res = client.get("/")
     assert res.status_code == 200
-    assert "AI Text Toolkit" in res.text
+    assert "Textuvia" in res.text
